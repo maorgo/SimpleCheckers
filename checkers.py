@@ -1,5 +1,4 @@
 from textcolors.colors import textcolors as clr
-import logging
 import subprocess as sp
 
 
@@ -41,18 +40,13 @@ class CheckersBoard:
             is_even = not is_even
 
     def _place_players(self):
-        logging.debug('Placing the players')
         for i in range(self.BOARD_DIMS):
             for j in range(self.BOARD_DIMS):
                 # Check if its in the zone of the first player (upper side of the board)
-                logging.debug('Going through cell ({}, {}): {}'.format(i, j, self.board[i][j]))
-                logging.debug('{}, {}'.format(i < self.starting_rows, self.board[i][j] == self.LEGAL_EMPTY_PLACE))
                 if i < self.starting_rows and self.board[i][j] == self.LEGAL_EMPTY_PLACE:
-                    logging.debug('Placing first player pawn')
                     self.board[i][j] = self.FIRST_PLAYER
                 # Check if it should be the second player
                 elif i >= len(self.board) - self.starting_rows and self.board[i][j] == self.LEGAL_EMPTY_PLACE:
-                    logging.debug('Placing second player pawn')
                     self.board[i][j] = self.SECOND_PLAYER
 
     def print_board(self):
@@ -81,7 +75,7 @@ class CheckersBoard:
 
     def move_player(self, player_invoking, origin_x, origin_y, dest_x, dest_y):
         # If you try to move an illegal place
-        if not board._is_inside_board(dest_x, dest_y) or self.board[dest_x][dest_y] != self.LEGAL_EMPTY_PLACE:
+        if not self._is_inside_board(dest_x, dest_y) or self.board[dest_x][dest_y] != self.LEGAL_EMPTY_PLACE:
             return False
 
         # If you try to move a player that is not yours
@@ -174,7 +168,7 @@ class CheckersBoard:
             sp.Popen('cls', shell=True).communicate()
             if not is_legal_move:
                 print('Illegal move')
-            board.print_board()
+            self.print_board()
             if player_turn == self.FIRST_PLAYER:
                 print('First player\'s turn')
             else:
@@ -187,7 +181,7 @@ class CheckersBoard:
             dest_y = int(input('col: '))
 
             # If the move was legal, clean the screen
-            if board.move_player(player_turn, origin_x, origin_y, dest_x, dest_y):
+            if self.move_player(player_turn, origin_x, origin_y, dest_x, dest_y):
                 sp.Popen('cls', shell=True).communicate()
             else:
                 is_legal_move = False
@@ -196,9 +190,3 @@ class CheckersBoard:
             if is_legal_move:
                 player_turn = \
                     [self.SECOND_PLAYER if player_turn == self.FIRST_PLAYER else self.FIRST_PLAYER][0]
-
-
-if __name__ == '__main__':
-    logging.basicConfig(level=logging.INFO)
-    board = CheckersBoard()
-    board.play()
