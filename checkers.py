@@ -170,9 +170,9 @@ class CheckersBoard:
                 print('Illegal move')
             self.print_board()
             if player_turn == self.FIRST_PLAYER:
-                print('First player\'s turn')
+                print('First player\'s turn (green)')
             else:
-                print('Second player\'s turn')
+                print('Second player\'s turn (blue)')
             print('Which pawn would you like to move?')
             origin_x = int(input('row: '))
             origin_y = int(input('col: '))
