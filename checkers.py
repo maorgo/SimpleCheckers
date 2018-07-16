@@ -134,7 +134,7 @@ class CheckersBoard:
             return True
 
         # Check if can eat up to the right
-        elif dest_x > starting_x and dest_y < starting_y and starting_x - 2 > -1 and starting_y + 2 < len(self.board) \
+        elif dest_x < starting_x and dest_y > starting_y and starting_x - 2 > -1 and starting_y + 2 < len(self.board) \
                 and self.board[starting_x - 1][starting_y + 1] == opponent:
             self.eat_up_right(starting_x, starting_y, player)
             return True
@@ -163,8 +163,8 @@ class CheckersBoard:
         ans = ''
         player_turn = self.FIRST_PLAYER
         print('This is the board:')
+        is_legal_move = True
         while ans != 'q':
-            is_legal_move = True
             sp.Popen('cls', shell=True).communicate()
             if not is_legal_move:
                 print('Illegal move')
@@ -183,6 +183,7 @@ class CheckersBoard:
             # If the move was legal, clean the screen
             if self.move_player(player_turn, origin_x, origin_y, dest_x, dest_y):
                 sp.Popen('cls', shell=True).communicate()
+                is_legal_move = True
             else:
                 is_legal_move = False
 
